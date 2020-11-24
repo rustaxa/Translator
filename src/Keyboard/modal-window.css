@@ -1,0 +1,68 @@
+#m{
+    width: 600px;
+    margin: 0 auto;
+    position: relative;
+    overflow-y: auto;
+}
+
+.ModalWindow{
+    z-index: 1;
+    max-width: 600px;
+    
+    width: 90%;
+    margin: 0 auto;
+    background-color: grey;
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 90%;
+    bottom: 10%;
+    position: fixed;
+}
+
+
+#modal-top{
+    
+    padding: 10px;
+    #position: sticky;
+    top: 0;
+    right: 0px;
+    background-color: lightsteelblue;
+    padding: 1px; 
+    margin: 0px
+}
+
+
+#modal-top button{
+    margin-right: 17px;
+    margin: 0;
+}
+
+#modal-top > p{
+    margin: 0;
+    padding: 0;
+}
+
+.name-modal-window{
+    text-align: left;
+    float: left;
+}
+
+.button-close{
+    text-align: right;
+   
+}
+
+.button-close button{
+    background-color:lightsteelblue;
+    border: none;
+}
+
+.button-close button:hover{
+    background-color:red;
+    border: none
+}
+
+#main{
+    width: 800px;
+    margin: 0 auto;
+}
