@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import config from './config';
 
+/*
+Компонент получает слово для перевода
+получает это слово с сервера
+и приводит его в удобочитаемый вид
 
+*/
 const Temp = (props) => {
     const [txt, setTxt] = useState('[com]No translate setTxt[/com]' )
     
@@ -11,16 +16,15 @@ const Temp = (props) => {
         }
     }, [props])
     
-    console.log('wordForTranslate', props.wordForTranslate, props.translationOfaWord)
+    
     // оставляем только [com] & [ex]
     const t = txt.match(/(?=\[com\]).*?(?<=\[\/com\])|(?=\[ex\]).*?(?<=\[\/ex\])/gi, (i) => i);
+
     // заменяем [] на <>
     const translate = t.map((i) => {
         return i.replace(/\[/g, (i) => {return '<'})
                 .replace(/\]/g, (i) => {return '>'})
     })
-
-    //useEffect(console.log('assa'), [props.wordForTranslate])
 
     // заменяем теги на компоненты
     const toReadableText = (i) => {
@@ -33,10 +37,7 @@ const Temp = (props) => {
         if(/\<\/?ex\>/g.test(i)){
             newText = i.replace(/\<\/?ex\>/g, (i) => {return ''})
             return <Ex> <span dangerouslySetInnerHTML={{__html: newText}} />  </Ex>
-        } 
-
-        
-                
+        }                 
     }
 
     

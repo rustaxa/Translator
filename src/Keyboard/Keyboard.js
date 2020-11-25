@@ -67,7 +67,7 @@ const Keyboard = () => {
 		span.push(e.target);
 		setLen(vocabArray.length)		
         */
-        getData(setSlovo, e.target.innerText.toLowerCase());
+        //getData(setSlovo, e.target.innerText.toLowerCase());
         
         
         console.log('Get Data', tr)
@@ -80,14 +80,14 @@ const Keyboard = () => {
 
     const handleChange = (e) => {
         setClickedWord(e.target.value)
-        getData(setSlovo, e.target.value.toLowerCase());
+        //getData(setSlovo, e.target.value.toLowerCase());
         
     }
     
     const del = (e) => {
         let word = clickedWord.substring(0, clickedWord.length - 1);
         setClickedWord(word)
-        getData(setSlovo, word.toLowerCase());
+        //getData(setSlovo, word.toLowerCase());
     }
 
     
@@ -151,30 +151,6 @@ const getData = (func, target) => {
 
 }
 
-/* появляющийся словарь
-    <div id='vocab' style={style} onDoubleClick={()=>{setVisibility('')}}>
-                
-                <p> Слов в словаре {newWord}
-                <p style={{textAlign: 'center'}} onClick={ ()=>{setVisibility('hidden')} }><button>close</button></p>
-                    <input type="text" value={clickedWord} onChange={handleChange} />
-                    <button onClick={del}> del </button>
-                    </p>
-                            <Html text={slovo.translate && slovo.translate.toString()
-                                                            .replace(/(com)/g, (i) => {return 'h3'})
-                                                            .replace(/(ex)/g, (i) => {return 'li'})
-                                                            .replace(/\]/g, () => {return '>'})
-                                                            .replace(/\[/g, (i) => {return '<'})
-                                                            
-                                                            .match(/(?=\<li\>).*?(?<=\<\/li\>)|(?=\<h3\>).*?(?<=\<\/h3\>)/g, (i) => {return i})
-                                                            
-                                                            
-                                                            }  /> 
-                     
-                <hr />
-                <p style={{textAlign: 'center'}} onClick={ ()=>{setVisibility('hidden'); setNewWord(newWord + 1)} }><button>+</button></p>
-                <p style={{textAlign: 'center'}} onClick={ ()=>{setVisibility('hidden')} }><button>close</button></p>
-            </div>
 
-*/
 
 export default Keyboard;
