@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import config from './config';
-const Com = (props) => {
-    return <h4>{props.children}</h4>
-}
 
-const Ex = (props) => {
-    return <li><i>{props.children}</i></li>
-}
 
 const Temp = (props) => {
     const [txt, setTxt] = useState('[com]No translate setTxt[/com]' )
@@ -57,6 +51,14 @@ const Temp = (props) => {
         </div>
     )
     
+}
+
+const Com = (props) => {
+    return <h4>{props.children}</h4>
+}
+
+const Ex = (props) => {
+    return <li><i>{props.children}</i></li>
 }
 
 const getTranslate = (url, func, wordForTranslate) => {
