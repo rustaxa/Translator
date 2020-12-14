@@ -1,6 +1,6 @@
 let config = {
     //queryGetWord: `http://192.168.1.67/?word=`,
-    queryGetWord: `http://localhost/?word=`,
+    urlWord: `http://localhost/?word=`,
 }
 
 export default config;
