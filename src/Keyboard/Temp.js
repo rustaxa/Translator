@@ -27,6 +27,13 @@ const Temp = (props) => {
     )  
 }
 
+/*
+* 
+* Вспомогательные функции и компоненты
+*
+*/
+
+
 // Вспомогательные компоненты
 const Com = (props) => {
     return <h4>{props.children}</h4>
@@ -37,7 +44,7 @@ const Ex = (props) => {
 }
 
 // получить перевод и поменять состояние
-const getTranslate = (url, setSomeThisng, wordForTranslate) => {
+const getTranslate = (url, setSomeThing, wordForTranslate) => {
     let translate = {}
     fetch(url+wordForTranslate)
     .then(response => response.json()) // преобразуем ответ в json
@@ -48,7 +55,7 @@ const getTranslate = (url, setSomeThisng, wordForTranslate) => {
         translate = JSON.stringify(data.translate)
         translate = translate == 'null' ? '{"translate": "[com]No translate[/com]"}' : translate;
         
-        setSomeThisng(translate)
+        setSomeThing(translate)
 
 
 	}).catch(err => alert(err))

@@ -13,6 +13,8 @@ import Book from './Book';
 
 import Timer from './Timer/Timer'
 
+import Player from './Player/Player'
+
 const App = () => {
   console.log('Render App')
    
@@ -20,11 +22,11 @@ const App = () => {
     <div className="App">
         {false && <Timer /> }
         {false && <Book />}
-       
+       <Player />
         <p>
           React Vocab
         </p>
-        <Keyboard />
+        {false && <Keyboard />} 
       
     </div>
   );
