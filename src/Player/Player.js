@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 
-const Player = () => {
+const Player = (props) => {
 
     const [time, setTime] = useState('00: 00')
+    const [s, setS] = useState({'0': 'START'});
+
+    useEffect(() => {
+      getTranslate('http://localhost/gc.php', setS)
+      console.log('USE')
+    }, [props])
 
     const _onReady = (event) => {
         // access to player in all event handlers via event.target
         event.target.pauseVideo();
+        let time;
         
+        console.log(s);
 
+        
+       
         setInterval(() => {
-                setTime(event.target.getCurrentTime())
-                console.log('Time is: ' +  (1 * event.target.getCurrentTime()).toFixed())
-            }, 500)
+            /*
+              показываем первую строку субтитров пока текущее время не превысит его значение
+              как только привысит показываем следующую строку
+            */
+                time = (1000 * event.target.getCurrentTime()).toFixed();
+                setTime( (1000 * event.target.getCurrentTime()).toFixed() )
+                
+                //console.log(s);
+                if( s ){
+
+                  console.log('ss', s[time])
+                }
+
+                
+            }, 100)
         
       }
     const opts = {
@@ -37,5 +59,23 @@ const Player = () => {
         </div>
     )
 }
+
+const getTranslate = (url, setSomeThing) => {
+  let translate = {}
+  fetch(url)
+  .then(response => response.json()) // преобразуем ответ в json
+  .then(data => {
+      //translate = data
+      //if(JSON.stringify(data.translate) == 'null') translate.translate = '{"translate": "[com]No translate[/com]"}'
+      //translate = JSON.stringify(data.translate) == 'null' ? '{"translate": "[com]No translate[/com]"}' : JSON.stringify(data.translate) ;
+      //translate = JSON.stringify(data.translate)
+      //translate = translate == 'null' ? '{"translate": "[com]No translate[/com]"}' : translate;
+      //console.log(data)
+      setSomeThing(data)
+
+
+}).catch(err => alert(err))
+}
+
 
 export default Player;
