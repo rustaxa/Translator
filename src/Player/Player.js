@@ -1,92 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
+import PlayerButtons from './PlayerButtons'
+import Keyboard from '../Keyboard';
 
 const Player = (props) => {
-
+  //  vodeio id r1wIff85jF4
     const [time, setTime] = useState('00: 00')
     const [s, setS] = useState({'0': 'START'});
     const [oneSub, setOneSub] = useState('No subs')
+    const [pause, setPause] = useState('')
+    const [YTplayer, setYTplayer] = useState({})
 
     useEffect(() => {
-      getTranslate('http://localhost/gc.php', setS)
+      //getTranslate('http://localhost/gc.php', setS)
+      
+     // console.log('PROMISE', getTranslate('http://localhost/gc.php', setS) instanceof Promise)
       console.log('USE')
     }, [props])
 
     const _onReady = (event) => {
         // access to player in all event handlers via event.target
-        event.target.pauseVideo();
-        let time;
-        
-        console.log(s);
-      
-        
-       
-        setInterval(() => {
-          // если нет субтитров снова их загружаем
-          //if(s['0'] === 'START') getTranslate('http://localhost/gc.php', setS)
+        //event.target.pauseVideo();
+        setYTplayer(event.target)
+        // пробел - пауза или проигрывание
+        document.body.onkeypress = function(e){
+          if(event.target.getPlayerState() == 2){
+            event.target.playVideo()
+          }else{
+            event.target.pauseVideo()
+          }
+        }
 
-            /*
-              показываем первую строку субтитров пока текущее время не превысит его значение
-              как только привысит показываем следующую строку
-            */
-                //time = (1000 * event.target.getCurrentTime()).toFixed();
-                time = (1 * event.target.getCurrentTime()).toFixed()
-               
-                setTime( (1 * event.target.getCurrentTime()).toFixed() + '___' + s[5] )
+        console.log('Загрузка субтитров');
+        fetch('http://localhost/gc.php')
+        .then(response => response.json()) // преобразуем ответ в json
+        .then(data => subsFormating(data))
+        .then(subs => enableSubs(subs, event, setOneSub))    
+    }
 
-               // console.log(s['\'' +time+ '\''])
-                //console.log(s);
-                //console.log('TIME',time, s)
-                //setOneSub( s[time] )
-                 // console.log('ss', s[time])
-               if( s[time] ){
-                  setOneSub( s[time] )
-                  console.log('ss', s[time])
-                }
-
-                
-            }, 500)
-        
-      }
     const opts = {
-        height: '390',
-        width: '640',
+      
+        height: '480',
+        width: '854',
         playerVars: {
           // https://developers.google.com/youtube/player_parameters
           autoplay: 1,
+          controls: 1,
+          modestbranding: 1
         },
       };
     return (
-        /*
-            <iframe id="ytplayer" type="text/html" width="640" height="360"
-             src="http://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com"
-            frameborder="0"/>
-        */
-
-        <div>
-             <YouTube videoId="r1wIff85jF4" opts={opts} onReady={_onReady} />
-             <p>Time is: {time} {oneSub}</p>
-            
+        <div style={{width: 400}}>
+          
+          <YouTube videoId="aeaQpuYPsy8" opts={opts} onReady={_onReady} />
+          <PlayerButtons player={YTplayer}/>
+          <h3>{oneSub}</h3>
+          {false && <Keyboard text={oneSub}/>}
+          <p>Time is: {time} </p>
+          <button onClick={()=>{getTranslate('http://localhost/gc.php', setS)}}>Загрузить субтитры</button>
         </div>
     )
 }
 
 const getTranslate = (url, setSomeThing) => {
-  let translate = {}
-  let subs = []
+  
   fetch(url)
   .then(response => response.json()) // преобразуем ответ в json
   .then(data => {
-      //translate = data
-      //if(JSON.stringify(data.translate) == 'null') translate.translate = '{"translate": "[com]No translate[/com]"}'
-      //translate = JSON.stringify(data.translate) == 'null' ? '{"translate": "[com]No translate[/com]"}' : JSON.stringify(data.translate) ;
-      //translate = JSON.stringify(data.translate)
-      //translate = translate == 'null' ? '{"translate": "[com]No translate[/com]"}' : translate;
-      //console.log(data)
+    subsFormating(data)
+    /*
       let subs = {}
       let prevTime = ''
       let seconds = ''
-      //console.log("KEYS", Object.keys(data))
+      
       for(let currentTime in data){
         seconds = (currentTime/1000).toFixed()
         if(prevTime === seconds){
@@ -94,15 +80,50 @@ const getTranslate = (url, setSomeThing) => {
         }
         prevTime = seconds;
         subs[seconds] = data[currentTime]
-        //console.log((currentTime/1000).toFixed(), data[currentTime])
+         
       }
       
       console.log('SUUUBS', subs)
       setSomeThing((prev) => subs)
       return subs;
+      */
+  })//.then( subs => setSomeThing((prev) => subs))
+  //.catch(err => console.log(err + 'Ошибка'))
+  
+}
 
-})//.then( subs => setSomeThing((prev) => subs))
-.catch(err => console.log(err + 'Ошибка'))
+
+const enableSubs = (subs, event, setSub) => { // включить субтитры
+  setInterval(() => {
+          
+    //time = (1000 * event.target.getCurrentTime()).toFixed();
+    let time = (1 * event.target.getCurrentTime()).toFixed() 
+    //setTime( time)
+    if( subs[time] ){
+      setSub( subs[time] )
+      console.log('ss', subs[time])
+    }
+  }, 500)
+}
+
+const subsFormating = (data) => { // субтитры в удобный формат
+  let subs = {}
+  let prevTime = ''
+  let seconds = ''
+  
+  for(let currentTime in data){
+    seconds = (currentTime/1000).toFixed()
+    if(prevTime === seconds){
+      subs[prevTime] = data[currentTime] + ' - ' + subs[prevTime]
+    }
+    prevTime = seconds;
+    subs[seconds] = data[currentTime]
+     
+  }
+  
+  console.log('SUUUBS', subs)
+  //setSomeThing((prev) => subs)
+  return subs;
 }
 
 /*

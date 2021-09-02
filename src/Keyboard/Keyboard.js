@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import config from './config';
-import text from './text'
+//import text from './text'
 import Html from './Html'
 import Temp from './Temp'
 import Regex from './regex'
@@ -10,7 +10,7 @@ import ModalWindow from './modalWindow';
 import Translate from './Translate';
 
 
-const Keyboard = () => {
+const Keyboard = ({text}) => {
     console.log('Render Keyboard') 
     
     let arr2 = text.replace(/[^a-zA-Z\'\-]/g, function(i){return '+++'+i+'+++'})
