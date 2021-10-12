@@ -9,15 +9,16 @@ const ModalWindow = (props) => {
     const [style, setStyle] = useState({'visibility': props.config.visibility})
     
     useEffect(() => {
+        //alert(props.showMe)
         console.log('Render ModalWindow')
         setStyle({'visibility': props.config.visibility})
     }, [props, qq])
     
 
     const hide = (e) => {
-
+        props.showMe(false)
         console.log('HIDE', style.opacity)
-        setStyle({'visibility': 'hidden'})
+        //setStyle({'visibility': 'hidden'})
         document.body.style.overflowY = ''
     }
 
@@ -32,7 +33,7 @@ const ModalWindow = (props) => {
 
    return (
         <div id='m'>
-            <button onClick={openHideModalWindow}>Показать  / скрыть окно</button>
+           {false && <button onClick={openHideModalWindow}>Показать  / скрыть окно</button> }
             
             <div className='ModalWindow' style={style}>
                     <div id='modal-top'>

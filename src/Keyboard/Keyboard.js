@@ -21,6 +21,8 @@ const Keyboard = ({text}) => {
 
     let vocabArray = [];
     let span = [];
+
+    const [showModalWindow, setShowModalWindow] = useState(true) 
     const [len, setLen] = useState(vocabArray.length);
     const [slovo, setSlovo] = useState({word: 'empty', translate: '[com]No translate[/com]', wordtype: 'empty'})
     //const [slovo, setSlovo] = useState({word: 'empty', translate: 'empty', wordtype: 'epty'})
@@ -49,7 +51,7 @@ const Keyboard = ({text}) => {
 
     const clkColor = (e) => {
         document.body.style.overflowY = 'hidden'
-
+        setShowModalWindow(true)
         console.log('propsModalWindow', propsModalWindow)
         setPropsModalWindow({
             visibility: '',
@@ -96,7 +98,7 @@ const Keyboard = ({text}) => {
        
         <div id='main'>
             
-            <ModalWindow config={propsModalWindow}>
+           {showModalWindow && <ModalWindow config={propsModalWindow} showMe={setShowModalWindow}>
                  <Temp 
                     //translationOfaWord={slovo.translate && slovo.translate.toString()} 
                     //translationOfaWord={`{"translate":"[m1][c blue][b]victim[\/b][\/c] [p]UK[\/p] [s]ukvicio003.wav[\/s] [p]US[\/p] [s]eus74846.wav[\/s] \/?v?k.t?m\/ [p]noun[\/p] [[p]C[\/p]][m2][c darkred][b]1.[\/b][\/c] [p]B2[\/p] [com]someone or something that has been hurt, damaged, or killed or has suffered, either because of the actions of someone or something else, or because of illness or chance: [\/com][m3][*]\ufffd [ex]to provide financial aid to hurricane\/flood, etc. victims[\/ex][\/*][m3][*]\ufffd [ex]victims of crime[\/ex][\/*][m3][*]\ufffd [ex]The children are the innocent\/helpless victims [b]of[\/b] the fighting.[\/ex][\/*][m3][*]\ufffd [ex]The new drug might help save the lives of cancer victims.[\/ex][\/*][m3][*]\ufffd [ex]We appear to have been the victims [b]of[\/b] a cruel practical joke.[\/ex][\/*][m3][*]\ufffd [ex]Our local hospital has become the latest victim [b]of[\/b] the cuts in government spending.[\/ex][\/*][m2][c olive][u]Thesaurus[\/u][sup]+[\/sup][\/c]: [ref]^People who receive medical treatment[\/ref][m2][c olive][u]Thesaurus[\/u][sup]+[\/sup][\/c]: [ref]^Experiencing and suffering[\/ref][m1][c darkblue][b]fall victim to [i]sth[\/i][\/b][\/c][m2][c darkred][b]2.[\/b][\/c] [p]F0[\/p] [com]to be hurt, damaged, or killed because of something or someone: [\/com][m3][*]\ufffd [ex]In 1948, Gandhi fell victim to a member of a Hindu gang.[\/ex][\/*][m3][*]\ufffd [ex]The company has fallen victim to increased competition.[\/ex][\/*][m2][c olive][u]Thesaurus[\/u][sup]+[\/sup][\/c]: [ref]^Injuring and injuries[\/ref][m1][c lightgray]\ufffd \ufffd \ufffd[\/c][m2][c olive][u]Extra Examples[\/u][\/c]:[m3][*]\ufffd [ex]The murderer had lured his victim to a deserted house.[\/ex][\/*][m3][*]\ufffd [ex]She claimed to have been a victim of child abuse.[\/ex][\/*][m3][*]\ufffd [ex]They're launching an appeal to raise money for famine victims.[\/ex][\/*][m3][*]\ufffd [ex]Road accident victims make up almost a quarter of the hospital's patients.[\/ex][\/*][m3][*]\ufffd [ex]The victim had received repeated blows to the head and body.[\/ex][\/*]"}`} 
@@ -109,7 +111,7 @@ const Keyboard = ({text}) => {
                     handleChange={handleChange} 
                     />
                     
-            </ModalWindow>
+            </ModalWindow> }
                  
             <p>
               

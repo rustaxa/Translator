@@ -4,7 +4,6 @@ import PlayerButtons from './PlayerButtons'
 import Keyboard from '../Keyboard';
 import { style } from '@mui/system';
 
-
 // узнать позицию элемента по Y относительно родителя и прокрутиться до него
 
 const Player = (props) => {
@@ -14,22 +13,11 @@ const Player = (props) => {
     const [oneSub, setOneSub] = useState('No subs')
     const [pause, setPause] = useState('')
     const [YTplayer, setYTplayer] = useState({})
-    //const [videoID, setVideoID] = useState('58a_9-ZMJek')
-    const [videoID, setVideoID] = useState('BX3zeFoOBOw')
+    const [videoID, setVideoID] = useState('btcuxx2mjfA')
     // субтитры для бегущей строки
     const [allSubs, setAllSubs] = useState(['First sub', 'First sub', 'First sub'])
     
     const subsScroll = useRef(null)
-
-    const toFragment = (time) => {
-      let fragmentTime = time;
-      let player = YTplayer;
-      return () => {
-        
-        player.seekTo(fragmentTime, true)
-        player.playVideo()
-      }
-    }
 
     useEffect(() => {
       //getTranslate('http://localhost/gc.php', setS)
@@ -53,12 +41,12 @@ const Player = (props) => {
         }
         //subsScroll.current.querySelector('#66').scrollIntoView({block: "center", behavior: "smooth"})} }
         
-        let videID = YouTubeGetID(event.target.getVideoUrl()) 
+        
           
        // s.scrollIntoView({block: "center", behavior: "smooth"})
         console.log('Загрузка субтитров');
         //fetch('http://localhost/gc.php')
-        fetch('http://192.168.1.66/gc.php?videoid=' + videID)
+        fetch('http://192.168.1.66/gc.php')
         .then(response => response.json()) // преобразуем ответ в json
         .then(data => subsFormating(data))
         // бегущие субтитры
@@ -109,8 +97,8 @@ const Player = (props) => {
                   
                   main.scrollTo(0, document.getElementById(time).offsetTop - focusFrame) // document.getElementById('frameForScrollingsSubs').offsetTop + frameForScrollingsSubs.height / 2
                   
-                  prevSub.style.color = 'grey'
-                  document.getElementById(time).style.color = 'black'
+                  prevSub.style.color = ''
+                  document.getElementById(time).style.color = 'grey'
                   
                   //document.getElementById('frameForScrollingsSubs').querySelector('#s'+66).scrollIntoView({block: "center", behavior: "smooth"})
                   //document.querySelector('#s'+66).scrollIntoView({block: "center", behavior: "smooth"})
@@ -130,8 +118,8 @@ const Player = (props) => {
 
     const opts = {
       
-        //height: '360',
-        //width: '854',
+        height: '480',
+        width: '854',
         playerVars: {
           // https://developers.google.com/youtube/player_parameters
           autoplay: 1,
@@ -140,21 +128,20 @@ const Player = (props) => {
         },
       };
     return (
-        <div style={{'width': '640px', 'max-width': '100%'}}>
+        <div style={{width: 600}}>
           
           <YouTube videoId={videoID} opts={opts} onReady={_onReady} />
-          
-
-          <h4 onClick={ () => { YTplayer.pauseVideo() } }> {true && <Keyboard text={oneSub} />}</h4>
           <PlayerButtons player={YTplayer}/>
           <h3>{oneSub}</h3>
-          <div id='frameForScrollingsSubs' style={{'height': '200px', 'overflow': 'auto'}}>
-            <div ref={subsScroll} id='main' >  
+          {false && <Keyboard text={oneSub}/>}
+
+          <div id='frameForScrollingsSubs' style={{'height': '200px', 'overflow': 'auto'}} onLoadend={()=>{alert('asdasd')}}>
+            <div ref={subsScroll} id='main'>  
               { // не оригинальный индекс, вернуть индекс, или через цикл по объекту отрисовать сабы 
                allSubs.map( ( v, idx ) => {
                         return (
-                                <p id={idx} style={{'color': 'grey'}}>
-                                  <span onClick={toFragment(idx)}> | time: {idx} |</span>  {v}  
+                                <p id={idx}>
+                                  time: {idx} --> {v} 
                                 </p>)
                       } )
                       
@@ -219,7 +206,7 @@ const enableSubs = (subs, event, setSub) => { // включить субтитр
     let time = (1 * event.target.getCurrentTime()).toFixed() 
     //setTime( time)
     if( subs[time] ){
-      setSub( subs[time] /*+'\n'+ subs[timeOfSubs[timeOfSubs.indexOf(time) + 1]] */)
+      setSub( subs[time] +'\n'+ subs[timeOfSubs[timeOfSubs.indexOf(time) + 1]])
       console.log('ss', subs[time])
     }
   }, 500)
@@ -244,19 +231,6 @@ const subsFormating = (data) => { // субтитры в удобный форм
   console.log('SUUUBS', subs)
   //setSomeThing((prev) => subs)
   return subs;
-}
-
-function YouTubeGetID(url){
-  var ID = '';
-  url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-  if(url[2] !== undefined) {
-    ID = url[2].split(/[^0-9a-z_\-]/i);
-    ID = ID[0];
-  }
-  else {
-    ID = url;
-  }
-    return ID;
 }
 
 /*
@@ -319,6 +293,5 @@ console.log(typeof xx)
 console.log(xx['15'].offsetTop)
 x.scrollTo(0, xx['15'].offsetTop)
 
-player.getVideoUrl():String
-Возвращает URL-адрес YouTube.com для текущего загруженного или проигрываемого видео.
+
  */
